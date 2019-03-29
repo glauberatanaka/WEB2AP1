@@ -9,7 +9,7 @@ String url = 'http://localhost:5000/api/Alunos';
 
 
 Future<List<Aluno>> getAllAlunos() async {
-  var response = await http.get(new Uri.http('10.0.2.2:5000', '/api/Alunos'));
+  var response = await http.get(new Uri.http('192.168.137.251:5000', '/api/Alunos'));
   print(response.body);
   return allAlunosFromJson(response.body);
 }
