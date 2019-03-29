@@ -27,15 +27,23 @@ class _ListarAlunosState extends State<ListarAlunos> {
         title: Text("Web2 App"),
       ),
       body: FutureBuilder(
-        future: obterTodosAlunos(),
+        future: getAllAlunos(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           // if(!snapshot.hasData) 
           //   return CircularProgressIndicator();
-          if(snapshot.data == null) {
+          if (snapshot.connectionState == ConnectionState.waiting){
             return Container(
               child: Center(
                 child: CircularProgressIndicator()
                 ),
+            );
+          // } else if (!snapshot.hasData) {
+          //   return Container(
+          //     child: Center(child: Text("Snapshot sem dados"),),
+          //   );
+           } else if (snapshot.hasError) {
+            return Container(
+              child: Center(child: Text(snapshot.error.toString()),),
             );
           } else {
             return ListView.builder(

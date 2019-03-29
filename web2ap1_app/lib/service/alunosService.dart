@@ -6,8 +6,10 @@ import 'package:web2ap1_app/models/aluno.dart';
 
 String url = 'http://localhost:5000/api/Alunos';
 
+
+
 Future<List<Aluno>> getAllAlunos() async {
-  var response = await http.get(url);
+  var response = await http.get(new Uri.http('10.0.2.2:5000', '/api/Alunos'));
   print(response.body);
   return allAlunosFromJson(response.body);
 }
