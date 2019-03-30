@@ -4,12 +4,12 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'package:web2ap1_app/models/aluno.dart';
 
-String url = 'http://localhost:5000/api/Alunos';
+String url = 'http://192.168.137.1:5000:5000/api/Alunos';
 
 
 
 Future<List<Aluno>> getAllAlunos() async {
-  var response = await http.get(new Uri.http('192.168.137.251:5000', '/api/Alunos'));
+  var response = await http.get(new Uri.http('192.168.137.1:5000', '/api/Alunos'));
   print(response.body);
   return allAlunosFromJson(response.body);
 }

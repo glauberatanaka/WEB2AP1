@@ -49,8 +49,49 @@ class _ListarAlunosState extends State<ListarAlunos> {
             return ListView.builder(
               itemCount: snapshot.data.length,
               itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  title: Text(snapshot.data[index].nome),
+                return Column(
+                  children: <Widget>[
+                    Divider(height: 5.0),
+                    ListTile(
+                      title: Text(
+                        '${snapshot.data[index].nome}',
+                        style: TextStyle(
+                          fontSize: 22.0,
+                          color: Colors.deepOrangeAccent,
+                        ),
+                      ),
+                      subtitle: Text(
+                        '${snapshot.data[index].curso}',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontStyle: FontStyle.italic
+                        ),
+                      ),
+                      leading: Column(
+                        children: <Widget>[
+                          CircleAvatar(
+                            backgroundColor: Colors.black87,
+                            radius: 15.0,
+                            child: Text(
+                              '${snapshot.data[index].semestre}º',
+                              style: TextStyle(
+                                fontSize: 22.0,
+                                color: Colors.white
+                              )
+                            ),
+                          ),
+                          Text(
+                            "sem",
+                            style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                              color: Colors.blueGrey
+                            ),
+                          )
+                        ],
+                      ),
+                      onTap: (){},
+                    ),
+                  ],
                 );
               },
             );
