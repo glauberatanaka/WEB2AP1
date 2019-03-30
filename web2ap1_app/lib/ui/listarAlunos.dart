@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:web2ap1_app/service/alunosService.dart';
 import 'dart:async';
 
+import 'package:web2ap1_app/ui/visualizarAluno.dart';
+
 class ListarAlunos extends  StatefulWidget{
   ListarAlunos({Key key, this.title}) : super(key: key);
   final String title;
@@ -84,12 +86,19 @@ class _ListarAlunosState extends State<ListarAlunos> {
                             "sem",
                             style: TextStyle(
                               fontStyle: FontStyle.italic,
-                              color: Colors.blueGrey
+                              color: Colors.blueGrey,
                             ),
                           )
                         ],
                       ),
-                      onTap: (){},
+                      onTap: (){
+                        Navigator.push(
+                          context, 
+                          MaterialPageRoute(
+                            builder: (context) => VisualizarAluno(aluno: snapshot.data[index])
+                          )
+                        );
+                      },
                     ),
                   ],
                 );
