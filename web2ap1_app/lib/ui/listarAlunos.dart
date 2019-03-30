@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:web2ap1_app/models/aluno.dart';
 import 'package:web2ap1_app/service/firestoreService.dart';
+import 'package:web2ap1_app/ui/adicionarAluno.dart';
 
 import 'package:web2ap1_app/ui/visualizarAluno.dart';
 
@@ -9,10 +10,6 @@ class ListarAlunos extends  StatefulWidget{
   ListarAlunos({Key key, this.title}) : super(key: key);
   final String title;
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   return new ListagemAlunos();
-  // }
   @override
   _ListarAlunosState createState() => new _ListarAlunosState();
 }
@@ -112,6 +109,12 @@ class _ListarAlunosState extends State<ListarAlunos> {
           child: new Icon(Icons.add),
           backgroundColor: Colors.black87,
           onPressed: () {
+            Navigator.push(
+              context, 
+              MaterialPageRoute(
+                builder: (context) => AdicionarAlunoForm()
+              )
+            );
           }
       ),
     );
