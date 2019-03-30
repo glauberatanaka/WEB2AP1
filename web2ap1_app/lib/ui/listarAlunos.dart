@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:web2ap1_app/service/alunosService.dart';
-import 'dart:async';
+import 'package:web2ap1_app/models/aluno.dart';
+import 'package:web2ap1_app/service/firestoreService.dart';
 
 import 'package:web2ap1_app/ui/visualizarAluno.dart';
 
@@ -18,6 +18,8 @@ class ListarAlunos extends  StatefulWidget{
 }
 
 class _ListarAlunosState extends State<ListarAlunos> {
+  FirestoreService<Aluno> alunoDB = new FirestoreService<Aluno>('alunos');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,42 +30,40 @@ class _ListarAlunosState extends State<ListarAlunos> {
         ),
         title: Text("Web2 App"),
       ),
-      body: FutureBuilder(
-        future: getAllAlunos(),
+      body: StreamBuilder(
+        stream: alunoDB.getList(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          // if(!snapshot.hasData) 
-          //   return CircularProgressIndicator();
           if (snapshot.connectionState == ConnectionState.waiting){
             return Container(
               child: Center(
                 child: CircularProgressIndicator()
                 ),
             );
-          // } else if (!snapshot.hasData) {
-          //   return Container(
-          //     child: Center(child: Text("Snapshot sem dados"),),
-          //   );
+          } else if (!snapshot.hasData) {
+            return Container(
+              child: Center(child: Text("Snapshot sem dados"),),
+            );
            } else if (snapshot.hasError) {
             return Container(
               child: Center(child: Text(snapshot.error.toString()),),
             );
           } else {
             return ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (BuildContext context, int index) {
+              itemCount: snapshot.data.documents.length,
+              itemBuilder: (context, index) {
                 return Column(
                   children: <Widget>[
                     Divider(height: 5.0),
                     ListTile(
                       title: Text(
-                        '${snapshot.data[index].nome}',
+                        '${snapshot.data.documents[index]['nome']}',
                         style: TextStyle(
                           fontSize: 22.0,
                           color: Colors.deepOrangeAccent,
                         ),
                       ),
                       subtitle: Text(
-                        '${snapshot.data[index].curso}',
+                        '${snapshot.data.documents[index]['curso']}',
                         style: TextStyle(
                           fontSize: 18.0,
                           fontStyle: FontStyle.italic
@@ -73,9 +73,9 @@ class _ListarAlunosState extends State<ListarAlunos> {
                         children: <Widget>[
                           CircleAvatar(
                             backgroundColor: Colors.black87,
-                            radius: 15.0,
+                            radius: 17.0,
                             child: Text(
-                              '${snapshot.data[index].semestre}º',
+                              '${snapshot.data.documents[index]['semestre']}º',
                               style: TextStyle(
                                 fontSize: 22.0,
                                 color: Colors.white
@@ -95,7 +95,7 @@ class _ListarAlunosState extends State<ListarAlunos> {
                         Navigator.push(
                           context, 
                           MaterialPageRoute(
-                            builder: (context) => VisualizarAluno(aluno: snapshot.data[index])
+                            builder: (context) => VisualizarAluno(aluno: snapshot.data.documents[index])
                           )
                         );
                       },
@@ -106,6 +106,13 @@ class _ListarAlunosState extends State<ListarAlunos> {
             );
           }
         },
+      ),
+      floatingActionButton: new FloatingActionButton(
+          tooltip: 'Adicionar novo Aluno',
+          child: new Icon(Icons.add),
+          backgroundColor: Colors.black87,
+          onPressed: () {
+          }
       ),
     );
   }
