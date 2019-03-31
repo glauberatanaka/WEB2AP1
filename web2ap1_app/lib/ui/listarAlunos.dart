@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:web2ap1_app/models/aluno.dart';
 import 'package:web2ap1_app/service/firestoreService.dart';
 import 'package:web2ap1_app/ui/adicionarAluno.dart';
+import 'package:lamp/lamp.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:vibrate/vibrate.dart';
 
 import 'package:web2ap1_app/ui/visualizarAluno.dart';
 
@@ -16,16 +19,51 @@ class ListarAlunos extends  StatefulWidget{
 
 class _ListarAlunosState extends State<ListarAlunos> {
   FirestoreService<Aluno> alunoDB = new FirestoreService<Aluno>('alunos');
+  bool _isOn = false;
+  bool _canVibrate;
+
+  @override
+  void initState() {
+    super.initState();
+    initPermission();
+    initVibratePermission();
+  }
+
+  initVibratePermission() async {
+    var vibratePermission = await Vibrate.canVibrate;
+    setState(() {
+      _canVibrate = vibratePermission;
+    });
+  }
+
+  initPermission() async {
+    PermissionStatus permission = await PermissionHandler().checkPermissionStatus(PermissionGroup.camera);
+    if (permission != PermissionStatus.granted) {
+      Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions([PermissionGroup.camera]);
+      print(permissions);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: (){},
-        ),
-        title: Text("Web2 App"),
+        title: Text("Web2 App - Glauber"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.lightbulb_outline),
+            onPressed: (){
+              Vibrate.vibrate();
+              if(!_isOn) {
+                Lamp.turnOn();
+                _isOn = true;
+              } else {
+                Lamp.turnOff();
+                _isOn = false;
+              }
+            },
+          )
+        ],
       ),
       body: StreamBuilder(
         stream: alunoDB.getList(),
@@ -89,6 +127,7 @@ class _ListarAlunosState extends State<ListarAlunos> {
                         ],
                       ),
                       onTap: (){
+                        Vibrate.vibrate();
                         Navigator.push(
                           context, 
                           MaterialPageRoute(
@@ -109,6 +148,7 @@ class _ListarAlunosState extends State<ListarAlunos> {
           child: new Icon(Icons.add),
           backgroundColor: Colors.black87,
           onPressed: () {
+            Vibrate.vibrate();
             Navigator.push(
               context, 
               MaterialPageRoute(

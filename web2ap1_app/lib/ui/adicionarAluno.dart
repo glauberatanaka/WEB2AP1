@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vibrate/vibrate.dart';
 import 'package:web2ap1_app/models/aluno.dart';
 import 'package:web2ap1_app/service/firestoreService.dart';
  
@@ -94,6 +95,8 @@ class _AdicionarAlunoFormState extends State<AdicionarAlunoForm> {
                         print('aluno adicionado com sucesso');
                         Navigator.pop(context);
                     });
+                    } else {
+                      Vibrate.vibrate();
                     }
                   }
                 ),
