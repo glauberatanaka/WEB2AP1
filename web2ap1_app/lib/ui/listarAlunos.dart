@@ -53,7 +53,8 @@ class _ListarAlunosState extends State<ListarAlunos> {
           IconButton(
             icon: Icon(Icons.lightbulb_outline),
             onPressed: (){
-              Vibrate.vibrate();
+              if(_canVibrate)
+                Vibrate.vibrate();
               if(!_isOn) {
                 Lamp.turnOn();
                 _isOn = true;
@@ -127,7 +128,8 @@ class _ListarAlunosState extends State<ListarAlunos> {
                         ],
                       ),
                       onTap: (){
-                        Vibrate.vibrate();
+                        if(_canVibrate)
+                          Vibrate.vibrate();
                         Navigator.push(
                           context, 
                           MaterialPageRoute(
@@ -148,7 +150,8 @@ class _ListarAlunosState extends State<ListarAlunos> {
           child: new Icon(Icons.add),
           backgroundColor: Colors.black87,
           onPressed: () {
-            Vibrate.vibrate();
+            if(_canVibrate)
+              Vibrate.vibrate();
             Navigator.push(
               context, 
               MaterialPageRoute(
