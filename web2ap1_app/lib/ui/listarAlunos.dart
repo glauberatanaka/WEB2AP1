@@ -19,6 +19,7 @@ class ListarAlunos extends  StatefulWidget{
 
 class _ListarAlunosState extends State<ListarAlunos> {
   FirestoreService<Aluno> alunoDB = new FirestoreService<Aluno>('alunos');
+  
   bool _isOn = false;
   bool _canVibrate;
 
